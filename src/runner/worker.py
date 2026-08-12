@@ -27,6 +27,14 @@ class Worker:
         bus.subscribe(RUN_CREATED, self.handle)
 
     def handle(self, ev: Event) -> None:
+        """Never raises: an unhandled exception would block the ack and wedge
+        the stream (see infra/runbooks/runner-wedged.md — it happened)."""
+        try:
+            self._handle(ev)
+        except Exception as e:  # noqa: BLE001 — worker must survive anything
+            print(f"worker error on {ev.payload.get('run_id')}: {type(e).__name__}: {e}", flush=True)
+
+    def _handle(self, ev: Event) -> None:
         run_id = ev.payload["run_id"]
         run = self.client.get_run(run_id)
         agent = {a.id: a for a in self.client.list_agents()}.get(run.agent_id)

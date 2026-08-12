@@ -3,5 +3,5 @@ RUN apt-get update && apt-get install -y --no-install-recommends git && rm -rf /
 WORKDIR /app
 COPY pyproject.toml ./
 COPY src ./src
-RUN pip install --no-cache-dir . "towerctl-core[redis] @ git+https://github.com/towerctl/core@v0.1.0"
+RUN pip install --no-cache-dir . "towerctl-core[redis] @ git+https://github.com/towerctl/core@v0.1.1"
 CMD ["python", "-m", "runner.worker"]
