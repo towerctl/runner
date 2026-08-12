@@ -43,7 +43,7 @@ class Worker:
                 tokens_out=result.tokens_out,
                 cost_usd=result.cost_usd,
             )
-        except Exception as e:  # failure taxonomy: see infra/runbooks
+        except Exception as e:  # noqa: BLE001 — worker must survive any executor failure
             status = RunStatus.FAILED
             upd = RunUpdate(status=status, error=f"{type(e).__name__}: {e}")
         self.client.update_run(run_id, upd)
