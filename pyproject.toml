@@ -1,0 +1,25 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "towerctl-runner"
+version = "0.1.0"
+description = "towerctl worker: executes agent runs, streams results back"
+requires-python = ">=3.10"
+dependencies = [
+    "towerctl-core @ git+https://github.com/towerctl/core@main",  # TODO: pin to tag at v0.1 release
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.4"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/runner"]
+
+[tool.ruff]
+line-length = 100
+src = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
