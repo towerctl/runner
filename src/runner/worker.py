@@ -42,7 +42,12 @@ class Worker:
         self.client.update_run(run_id, RunUpdate(status=RunStatus.RUNNING, started_at=started))
         t0 = time.perf_counter()
         try:
-            result = execute(agent.kind if agent else "echo", run.input)
+            result = execute(
+                agent.kind if agent else "echo",
+                run.input,
+                model=agent.model if agent else None,
+                system_prompt=agent.system_prompt if agent else None,
+            )
             status = RunStatus.SUCCEEDED
             upd = RunUpdate(
                 status=status,
